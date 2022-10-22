@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,5 +23,10 @@ public class UsStateController {
     @GetMapping("/getAll")
     public List<UsState> getAll() {
         return usStateService.getAll();
+    }
+
+    @GetMapping("/getById/{stateId}")
+    public UsState getById(@PathVariable int stateId) {
+        return usStateService.getById(stateId);
     }
 }

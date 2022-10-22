@@ -1,5 +1,7 @@
 package bozlak.autowiredless.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsState {
+public class UsState implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

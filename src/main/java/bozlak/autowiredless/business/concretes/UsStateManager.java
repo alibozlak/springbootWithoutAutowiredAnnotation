@@ -22,4 +22,9 @@ public class UsStateManager implements UsStateService {
         return usStateDal.getAll();
     }
 
+    @Override
+    public UsState getById(int stateId) {
+        return usStateDal.getById(stateId);
+    }
+
 }

@@ -6,4 +6,5 @@ import bozlak.autowiredless.entities.UsState;
 
 public interface UsStateDal {
     List<UsState> getAll();
+    UsState getById(int stateId);
 }
