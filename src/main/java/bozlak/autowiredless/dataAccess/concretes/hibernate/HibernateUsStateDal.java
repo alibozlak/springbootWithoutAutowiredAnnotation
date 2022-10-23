@@ -14,18 +14,16 @@ import bozlak.autowiredless.entities.UsState;
 @Repository
 public class HibernateUsStateDal implements UsStateDal {
 
-    Session session;
-
     @Override
     public List<UsState> getAll() {
-        session = this.getSession();
+        Session session = this.getSession();
 
         List<UsState> usStates = null;
         try {
             session.beginTransaction();
 
             usStates = session.createQuery("from UsState", UsState.class)
-            .getResultList();
+                    .getResultList();
 
             session.getTransaction().commit();
         } catch (Exception exception) {
@@ -40,14 +38,16 @@ public class HibernateUsStateDal implements UsStateDal {
     public UsState getById(int stateId) {
         Transaction transaction = null;
         UsState usState = null;
-        try (Session session = getSession()) {
+        Session session = null;
+        try {
+            session = getSession();
             // start a transaction
             transaction = session.beginTransaction();
+            String hql = "from UsState us where us.stateId=" + stateId;
 
-            // Obtain an entity using byId() method
-            usState = session
-            .createQuery("from UsState where stateId=" + stateId + "", UsState.class)
-            .getSingleResult();
+            usState = session.createQuery(hql, UsState.class).uniqueResult();
+
+            // usState = session.get(UsState.class,stateId);
 
             // commit transaction
             transaction.commit();
@@ -63,7 +63,7 @@ public class HibernateUsStateDal implements UsStateDal {
 
     private Session getSession() {
         return new Configuration().configure("hibernate.cfg.xml")
-        .addAnnotatedClass(UsState.class).buildSessionFactory().openSession();
+                .addAnnotatedClass(UsState.class).buildSessionFactory().openSession();
     }
-    
+
 }
