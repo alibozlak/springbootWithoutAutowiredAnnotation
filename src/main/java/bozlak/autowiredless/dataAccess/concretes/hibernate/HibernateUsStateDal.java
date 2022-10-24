@@ -22,7 +22,8 @@ public class HibernateUsStateDal implements UsStateDal {
         try {
             session.beginTransaction();
 
-            usStates = session.createQuery("from UsState", UsState.class)
+            String hql = "from UsState order by stateId";
+            usStates = session.createQuery(hql, UsState.class)
                     .getResultList();
 
             session.getTransaction().commit();
@@ -41,15 +42,13 @@ public class HibernateUsStateDal implements UsStateDal {
         Session session = null;
         try {
             session = getSession();
-            // start a transaction
             transaction = session.beginTransaction();
-            String hql = "from UsState us where us.stateId=" + stateId;
 
-            usState = session.createQuery(hql, UsState.class).uniqueResult();
+            // String hql = "from UsState us where us.stateId=" + stateId;
+            // usState = session.createQuery(hql, UsState.class).uniqueResult();
 
-            // usState = session.get(UsState.class,stateId);
+            usState = session.get(UsState.class,stateId);
 
-            // commit transaction
             transaction.commit();
             return usState;
         } catch (Exception e) {
@@ -64,6 +63,60 @@ public class HibernateUsStateDal implements UsStateDal {
     private Session getSession() {
         return new Configuration().configure("hibernate.cfg.xml")
                 .addAnnotatedClass(UsState.class).buildSessionFactory().openSession();
+    }
+
+    @Override
+    public void add(UsState usState) {
+        Session session = getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+
+            session.save(usState);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void update(UsState usState) {
+        Session session = getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+
+            session.update(usState);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(UsState usState) {
+        Session session = getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+
+            session.delete(usState);
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
 }

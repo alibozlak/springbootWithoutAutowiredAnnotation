@@ -27,4 +27,19 @@ public class UsStateManager implements UsStateService {
         return usStateDal.getById(stateId);
     }
 
+    @Override
+    public void add(UsState usState) {
+        usStateDal.add(usState);
+    }
+
+    @Override
+    public void update(UsState usState) {
+        usStateDal.update(usState);
+    }
+
+    @Override
+    public void delete(UsState usState) {
+        usStateDal.delete(usState);
+    }
+
 }
